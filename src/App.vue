@@ -63,7 +63,6 @@ import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
-
 export default {
   data() {
     return {
@@ -183,8 +182,7 @@ export default {
           console.log(res);
           if (res.data.status == "success") {
             Toastify({
-              text:
-                "Success! Order submitted to oneflow.",
+              text: "Success! Order submitted to oneflow.",
               className: "info",
               gravity: "bottom",
               position: "left",
@@ -214,7 +212,7 @@ export default {
   },
   created() {
     axios
-      .get("http://157.245.51.194/api/hectors_post/be_brave/results.php")
+      .get("https://bebraveapi.hectorspost.com/results.php")
       .then((res) => {
         this.submissions = res.data;
       })
