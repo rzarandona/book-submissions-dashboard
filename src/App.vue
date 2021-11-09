@@ -173,7 +173,7 @@ export default {
     submit(order_id, inner_pdf, outer_pdf) {
       JSON.stringify(order_id, inner_pdf, outer_pdf);
       axios
-        .post("https://oneflowapirelay.cisad.cf/submit_order", {
+        .post("https://oneflowrelay.hectorspost.com/submit_order", {
           order_id: order_id,
           inner_pdf: inner_pdf,
           outer_pdf: outer_pdf,
