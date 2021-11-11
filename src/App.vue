@@ -215,6 +215,7 @@ export default {
       .get("https://bebraveapi.hectorspost.com/results.php")
       .then((res) => {
         this.submissions = res.data;
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
