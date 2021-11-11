@@ -6,6 +6,10 @@
       </div>
     </nav>
 
+    <modal name="more-info-modal">
+      This is my first modal
+    </modal>
+
     <div class="container">
       <table class="table table-hove table-striped table-responsive mt-4 mb-4">
         <thead>
@@ -31,7 +35,15 @@
                   submit(
                     item.order_id,
                     item.inner_pdf_link,
-                    item.outer_pdf_link
+                    item.outer_pdf_link,
+                    item.customer_name,
+                    item.town,
+                    item.postcode,
+                    item.iso_country,
+                    item.shipping_alias,
+                    item.sku,
+                    item.unit_cost,
+                    item.address_line
                   )
                 "
                 class="btn btn-primary btn-sm"
@@ -52,20 +64,12 @@
               >
 
               <button
-                class="btn btn-primary"
+                @click="showMoreInfo(item)"
+                class="btn btn-primary btn-sm ms-2"
                 type="button"
-                data-toggle="collapse"
-                :data-target="'#item-' + item.id"
-                aria-expanded="false"
-                aria-controls="collapseExample"
               >
                 More Info
               </button>
-              <div class="collapse" :id="'item-' + item.id">
-                <div class="card card-body">
-                  {{ item.order_id }}
-                </div>
-              </div>
             </td>
           </tr>
         </tbody>
@@ -78,6 +82,7 @@
 import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import MoreInfo from "./components/MoreInfo.vue";
 
 export default {
   data() {
@@ -186,13 +191,33 @@ export default {
     },
     */
     // #endregion
-    submit(order_id, inner_pdf, outer_pdf) {
+    submit(
+      order_id,
+      inner_pdf,
+      outer_pdf,
+      customer_name,
+      town,
+      postcode,
+      iso_country,
+      shipping_alias,
+      sku,
+      unit_cost,
+      address_line
+    ) {
       JSON.stringify(order_id, inner_pdf, outer_pdf);
       axios
         .post("https://oneflowrelay.hectorspost.com/submit_order", {
           order_id: order_id,
           inner_pdf: inner_pdf,
           outer_pdf: outer_pdf,
+          customer_name: customer_name,
+          town: town,
+          postcode: postcode,
+          iso_country: iso_country,
+          shipping_alias: shipping_alias,
+          sku: sku,
+          unit_cost: unit_cost,
+          address_line: address_line,
         })
         .then((res) => {
           console.log(res);
@@ -224,6 +249,19 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    showMoreInfo(item) {
+      this.$modal.show(
+        MoreInfo,
+        {
+          item: item,
+        },
+        {
+          scrollable: true,
+          height: "auto",
+          styles: "padding:20px",
+        }
+      );
     },
   },
   created() {
