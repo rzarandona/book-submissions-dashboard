@@ -50,6 +50,22 @@
                 class="btn btn-secondary btn-sm ms-2"
                 >Outer PDF</a
               >
+
+              <button
+                class="btn btn-primary"
+                type="button"
+                data-toggle="collapse"
+                :data-target="'#item-' + item.id"
+                aria-expanded="false"
+                aria-controls="collapseExample"
+              >
+                More Info
+              </button>
+              <div class="collapse" :id="'item-' + item.id">
+                <div class="card card-body">
+                  {{ item.order_id }}
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
