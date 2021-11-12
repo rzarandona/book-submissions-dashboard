@@ -8,9 +8,7 @@
       </div>
     </nav>
 
-    <modal name="more-info-modal">
-      This is my first modal
-    </modal>
+    <modal name="more-info-modal"></modal>
 
     <div class="container">
       <table class="table table-hove table-striped table-responsive mt-4 mb-4">
