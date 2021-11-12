@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <Loader v-if="is_loading" />
+
     <nav class="navbar navbar-dark bg-primary">
       <div class="container">
         <a class="navbar-brand" href="#">Book Submissions Dashboard</a>
@@ -24,13 +26,24 @@
         </thead>
         <tbody>
           <tr v-for="item in submissions" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td>{{ item.email }}</td>
-            <td>{{ item.date_created }}</td>
-            <td>{{ item.date_paid }}</td>
-            <td>{{ item.order_id }}</td>
+            <td>
+              <small>{{ item.id }}</small>
+            </td>
+            <td>
+              <small>{{ item.email }}</small>
+            </td>
+            <td>
+              <small>{{ item.date_created }}</small>
+            </td>
+            <td>
+              <small>{{ item.date_paid }}</small>
+            </td>
+            <td>
+              <small>{{ item.order_id }}</small>
+            </td>
             <td>
               <button
+                :disabled="!item.order_id"
                 @click="
                   submit(
                     item.order_id,
@@ -84,10 +97,13 @@ import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import MoreInfo from "./components/MoreInfo.vue";
 
+import Loader from "./components/Loader.vue";
+
 export default {
   data() {
     return {
       submissions: [],
+      is_loading: true,
     };
   },
   methods: {
@@ -204,6 +220,7 @@ export default {
       unit_cost,
       address_line
     ) {
+      this.is_loading = true;
       JSON.stringify(order_id, inner_pdf, outer_pdf);
       axios
         .post("https://oneflowrelay.hectorspost.com/submit_order", {
@@ -222,6 +239,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data.status == "success") {
+            this.is_loading = false;
             Toastify({
               text: "Success! Order submitted to oneflow.",
               className: "info",
@@ -233,6 +251,7 @@ export default {
               },
             }).showToast();
           } else {
+            this.is_loading = false;
             Toastify({
               text:
                 "Error: An order with the same ID has already been submitted",
@@ -247,6 +266,7 @@ export default {
           }
         })
         .catch((err) => {
+          this.is_loading = false;
           console.log(err);
         });
     },
@@ -264,18 +284,27 @@ export default {
       );
     },
   },
+  components: {
+    Loader,
+  },
   created() {
     axios
       .get("https://bebraveapi.hectorspost.com/results.php")
       .then((res) => {
         this.submissions = res.data;
         console.log(res.data);
+        this.is_loading = false;
       })
       .catch((err) => {
         console.log(err);
+        this.is_loading = false;
       });
   },
 };
 </script>
 
-<style></style>
+<style>
+.btn-sm {
+  font-size: 11px;
+}
+</style>
