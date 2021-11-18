@@ -5,6 +5,7 @@
     <nav class="navbar navbar-dark bg-primary">
       <div class="container">
         <a class="navbar-brand" href="#">Book Submissions Dashboard</a>
+        <div class="ms-auto"><button @click="refresh" class="btn btn-primary refresh-button"><span>&#x21bb;</span> REFRESH</button></div>
       </div>
     </nav>
 
@@ -101,7 +102,7 @@ export default {
   data() {
     return {
       submissions: [],
-      is_loading: true,
+      is_loading: false,
     };
   },
   methods: {
@@ -281,12 +282,9 @@ export default {
         }
       );
     },
-  },
-  components: {
-    Loader,
-  },
-  created() {
-    axios
+    loadData(){
+      this.is_loading = true;
+      axios
       .get("https://bebraveapi.hectorspost.com/results.php")
       .then((res) => {
         this.submissions = res.data;
@@ -297,6 +295,16 @@ export default {
         console.log(err);
         this.is_loading = false;
       });
+    },
+    refresh(){
+      this.loadData();
+    }
+  },
+  components: {
+    Loader,
+  },
+  created() {
+    this.loadData();
   },
 };
 </script>
@@ -304,5 +312,15 @@ export default {
 <style>
 .btn-sm {
   font-size: 11px;
+}
+.refresh-button{
+  background:#66a593;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding:10px 30px;
+}
+.refresh-button span{
+  font-size: 15px;
 }
 </style>
